@@ -505,7 +505,7 @@ void AudioPlayer_Loop() {
 		/* Check if track-control was called
 		   (stop, start, next track, prev. track, last track, first track...) */
 		switch (trackCommand) {
-			case STOP:
+			case TRACK_STOP:
 				audio->stopSong();
 				trackCommand = NO_ACTION;
 				Log_Println(cmndStop, LOGLEVEL_INFO);
@@ -1060,7 +1060,7 @@ void AudioPlayer_SetPlaylist(const char *_itemToPlay, const uint32_t _lastPlayPo
 		Log_Println(errorOccured, LOGLEVEL_ERROR);
 		System_IndicateError();
 		if (gPlayProperties.playMode != NO_PLAYLIST) {
-			AudioPlayer_SetTrackControl(STOP);
+			AudioPlayer_SetTrackControl(TRACK_STOP);
 		}
 		return;
 	}
@@ -1071,7 +1071,7 @@ void AudioPlayer_SetPlaylist(const char *_itemToPlay, const uint32_t _lastPlayPo
 		Log_Println(noMp3FilesInDir, LOGLEVEL_NOTICE);
 		System_IndicateError();
 		if (!gPlayProperties.pausePlay) {
-			AudioPlayer_SetTrackControl(STOP);
+			AudioPlayer_SetTrackControl(TRACK_STOP);
 			while (!gPlayProperties.pausePlay) {
 				AudioPlayer_Loop();
 				vTaskDelay(portTICK_PERIOD_MS * 10u);

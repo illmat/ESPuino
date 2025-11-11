@@ -4,10 +4,14 @@
 #define OPMODE_NORMAL			0 // Normal mode
 #define OPMODE_BLUETOOTH_SINK	1 // Bluetooth sink mode. Player acts as as bluetooth speaker. WiFi is deactivated. Music from SD and webstreams can't be played.
 #define OPMODE_BLUETOOTH_SOURCE 2 // Bluetooth sourcemode. Player sennds audio to bluetooth speaker/headset. WiFi is deactivated. Music from SD and webstreams can't be played.
+#define OPMODE_DUPLO_TRAIN 3  // Lego Duplo Train control mode. Player acts as a remote control for Duplo trains.
+
+#define DUPLO_TRAIN_SPEED_MAX   64
+#define DUPLO_TRAIN_SPEED_MIN  -64
 
 // Track-Control
 #define NO_ACTION	   0 // Dummy to unset track-control-command
-#define STOP		   1 // Stop play
+#define TRACK_STOP   1 // Stop play
 #define PLAY		   2 // Start play (currently not used)
 #define PAUSEPLAY	   3 // Pause/play
 #define NEXTTRACK	   4 // Next track of playlist
@@ -54,6 +58,7 @@
 #define CMD_TOGGLE_BLUETOOTH_SINK_MODE	 140 // Toggles Normal/Bluetooth sink Mode
 #define CMD_TOGGLE_BLUETOOTH_SOURCE_MODE 141 // Toggles Normal/Bluetooth source Mode
 #define CMD_TOGGLE_MODE					 142 // Toggles Normal => Bluetooth sink => Bluetooth source => Normal Mode
+#define CMD_TOGGLE_DUPLO_TRAIN_MODE		 145 // Toggles Duplo Train mode
 #define CMD_ENABLE_FTP_SERVER			 150 // Enables FTP-server
 #define CMD_TELL_IP_ADDRESS				 151 // Command: ESPuino announces its IP-address via speech
 #define CMD_TELL_CURRENT_TIME			 152 // Command: ESPuino announces current time via speech

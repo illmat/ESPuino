@@ -6,6 +6,7 @@
 #include "AudioPlayer.h"
 #include "Battery.h"
 #include "Bluetooth.h"
+#include "DuploTrain.h"
 #include "Button.h"
 #include "Log.h"
 #include "Mqtt.h"
@@ -311,6 +312,12 @@ CRGB::HTMLColorCode Led_GetIdleColor() {
 			idleColor = CRGB::Blue;
 		} else {
 			idleColor = CRGB::BlueViolet;
+		}
+	} else if(OPMODE_DUPLO_TRAIN == System_GetOperationMode()) {
+		if (DuploTrain_Connected()) {
+			idleColor = CRGB::Cyan;
+		} else {
+			idleColor = CRGB::FireBrick;
 		}
 	} else {
 		if (Wlan_ConnectionTryInProgress()) {

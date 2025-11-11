@@ -7,6 +7,7 @@
 #include "AudioPlayer.h"
 #include "Battery.h"
 #include "Bluetooth.h"
+#include "DuploTrain.h"
 #include "Button.h"
 #include "Cmd.h"
 #include "Common.h"
@@ -180,6 +181,7 @@ void setup() {
 	Wlan_Init();
 	Mqtt_Init();
 	Bluetooth_Init();
+	DuploTrain_Init();
 
 	if (OPMODE_NORMAL == System_GetOperationMode()) {
 		Wlan_Cyclic();
@@ -224,7 +226,10 @@ void loop() {
 		// bluetooth headset mode
 		Bluetooth_Cyclic();
 		RotaryEncoder_Cyclic();
-	} else {
+	} else if (OPMODE_DUPLO_TRAIN == System_GetOperationMode()) {
+		DuploTrain_Cyclic();
+		RotaryEncoder_Cyclic();
+	}	else {
 		// normal mode
 		Wlan_Cyclic();
 		Web_Cyclic();

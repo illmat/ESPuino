@@ -4,6 +4,7 @@
 #include "RotaryEncoder.h"
 
 #include "AudioPlayer.h"
+#include "DuploTrain.h"
 #include "Log.h"
 #include "System.h"
 
@@ -59,6 +60,10 @@ void RotaryEncoder_Cyclic(void) {
 		System_UpdateActivityTimer(); // Set inactivity back if rotary encoder was used
 		// just reset the encoder here, so we get a new delta next time
 		encoder.clearCount();
+		if (System_GetOperationMode() == OPMODE_DUPLO_TRAIN) {
+			DuploTrain_SetSpeed(encoderValue);
+			return;
+		}
 		auto currentVol = AudioPlayer_GetCurrentVolume();
 		AudioPlayer_SetVolume(currentVol + (encoderValue / 2), false);
 		return;

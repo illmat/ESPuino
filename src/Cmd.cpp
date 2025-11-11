@@ -6,6 +6,8 @@
 #include "AudioPlayer.h"
 #include "Battery.h"
 #include "Bluetooth.h"
+#include "DuploTrain.h"
+#include <Lpf2HubConst.h>
 #include "Ftp.h"
 #include "Led.h"
 #include "Log.h"
@@ -194,6 +196,20 @@ void Cmd_Action(const uint16_t mod) {
 			break;
 		}
 
+#ifdef DUPLO_TRAIN_CONTROL_ENABLE
+		case CMD_TOGGLE_DUPLO_TRAIN_MODE: {
+			if (System_GetOperationModeFromNvs() == OPMODE_NORMAL) {
+				System_IndicateOk();
+				System_SetOperationMode(OPMODE_DUPLO_TRAIN);
+			} else if (System_GetOperationModeFromNvs() == OPMODE_DUPLO_TRAIN) {
+				System_IndicateOk();
+				System_SetOperationMode(OPMODE_NORMAL);
+			} else {
+				System_IndicateError();
+			}
+		}
+#endif
+
 #ifdef BLUETOOTH_ENABLE
 		case CMD_TOGGLE_BLUETOOTH_SINK_MODE: {
 			if (System_GetOperationModeFromNvs() == OPMODE_NORMAL) {
@@ -227,6 +243,9 @@ void Cmd_Action(const uint16_t mod) {
 				System_IndicateOk();
 				System_SetOperationMode(OPMODE_BLUETOOTH_SOURCE);
 			} else if (System_GetOperationModeFromNvs() == OPMODE_BLUETOOTH_SOURCE) {
+				System_IndicateOk();
+				System_SetOperationMode(OPMODE_DUPLO_TRAIN);
+			} else if (System_GetOperationModeFromNvs() == OPMODE_DUPLO_TRAIN) {
 				System_IndicateOk();
 				System_SetOperationMode(OPMODE_NORMAL);
 			} else {
@@ -277,7 +296,9 @@ void Cmd_Action(const uint16_t mod) {
 		case CMD_PLAYPAUSE: {
 			if ((OPMODE_NORMAL == System_GetOperationMode()) || (OPMODE_BLUETOOTH_SOURCE == System_GetOperationMode())) {
 				AudioPlayer_SetTrackControl(PAUSEPLAY);
-			} else {
+			} else if (OPMODE_DUPLO_TRAIN == System_GetOperationMode()) {
+				DuploTrain_Brake();
+			}  else {
 				Bluetooth_PlayPauseTrack();
 			}
 			break;
@@ -286,6 +307,8 @@ void Cmd_Action(const uint16_t mod) {
 		case CMD_PREVTRACK: {
 			if ((OPMODE_NORMAL == System_GetOperationMode()) || (OPMODE_BLUETOOTH_SOURCE == System_GetOperationMode())) {
 				AudioPlayer_SetTrackControl(PREVIOUSTRACK);
+			} else if (OPMODE_DUPLO_TRAIN == System_GetOperationMode()) {
+				DuploTrain_PlaySound(DuploTrainBaseSound::HORN);
 			} else {
 				Bluetooth_PreviousTrack();
 			}
@@ -295,6 +318,8 @@ void Cmd_Action(const uint16_t mod) {
 		case CMD_NEXTTRACK: {
 			if ((OPMODE_NORMAL == System_GetOperationMode()) || (OPMODE_BLUETOOTH_SOURCE == System_GetOperationMode())) {
 				AudioPlayer_SetTrackControl(NEXTTRACK);
+			} else if (OPMODE_DUPLO_TRAIN == System_GetOperationMode()) {
+				DuploTrain_ToggleLight();
 			} else {
 				Bluetooth_NextTrack();
 			}
@@ -374,7 +399,7 @@ void Cmd_Action(const uint16_t mod) {
 		}
 
 		case CMD_STOP: {
-			AudioPlayer_SetTrackControl(STOP);
+			AudioPlayer_SetTrackControl(TRACK_STOP);
 			break;
 		}
 

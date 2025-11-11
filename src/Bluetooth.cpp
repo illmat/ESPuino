@@ -208,6 +208,9 @@ void Bluetooth_VolumeChanged(int _newVolume) {
 
 void Bluetooth_Init(void) {
 #ifdef BLUETOOTH_ENABLE
+	if (System_GetOperationMode() == OPMODE_DUPLO_TRAIN) {
+		return;
+	}
 	if (System_GetOperationMode() == OPMODE_BLUETOOTH_SINK) {
 		// bluetooth in sink mode (player acts as a BT-Speaker)
 		a2dp_sink = new BluetoothA2DPSink();
