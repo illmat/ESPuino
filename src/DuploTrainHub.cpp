@@ -1,7 +1,5 @@
 // copied from: https://github.com/corneliusmunz/legoino/issues/44#issuecomment-985384328
-// TODO: add explanation
-// TODO: move to fork
-// TODO: fork in github
+// this fixes some issues regarding unreliable color and sound methods
 #include "DuploTrainHub.h"
 
 void DuploTrainHub::activateBaseSpeaker() {

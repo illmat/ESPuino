@@ -100,17 +100,6 @@ void DuploTrain_Cyclic() {
   DuploTrain_HandleColor(now);
 }
 
-void DuploTrain_Test(int speed) {
-  Log_Println("DuploTrain: test", LOGLEVEL_INFO);
-  if (!DuploTrain_EnsureConnected()) return;
-  if (gTrainState.isMoving) {
-    gHubState.hub.setBasicMotorSpeed(gHubState.motorPort, 0);
-  } else {
-    gHubState.hub.setBasicMotorSpeed(gHubState.motorPort, speed);
-  }
-  gTrainState.isMoving = !gTrainState.isMoving;
-}
-
 void DuploTrain_PlaySound(DuploTrainBaseSound sound) {
   Log_Println("DuploTrain: play sound", LOGLEVEL_INFO);
   if (!DuploTrain_EnsureConnected()) return;
@@ -169,7 +158,6 @@ int8_t DuploTrain_GetStepIndex() {
 
 void DuploTrain_Init() {}
 void DuploTrain_Cyclic() {}
-void DuploTrain_Test(int) {}
 void DuploTrain_PlaySound(DuploTrainBaseSound) {}
 bool DuploTrain_Connected() { return false; }
 void DuploTrain_ToggleLight() {}
